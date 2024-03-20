@@ -1,0 +1,77 @@
+# This is a Free simple code I made for auto compressors for servers like BoxServers, Prison servers ect..
+
+#Made by XZUWWI, Discord: zrxxz | Dm me if you have any questions about this 
+
+
+
+options:
+	time: 1 tick #changing this might make the compressors take too long to compress 
+
+
+
+#A command to get AutoCompressors
+command /getautocompressor [<text>] [<player>]:
+	permission: autocompress.admin
+	trigger:
+		if arg-1 is set:
+			if arg-2 is set: #if we want to give the compressor to someone else
+				if arg-1 is "stone": #Change "Stone" to the name of your compressor
+					give 1 minecart with hopper with name "&7Stone Compressor" with lore "" and "&2Automatically compresses &7Stone &2!" and "" and "&7&lCOMMON" to arg-2
+        if arg-1 is "lapis":
+					give 1 minecart with hopper with name "&1Auto Compressor &6[&eI&6]" with lore "" and "&2Automatically compresses &eEverything &2!" and "" and "&a&lUNCOMMON" to arg-2
+       #I removed my own compressors but left some as exmaples -> add yours here:
+			if arg-2 is not set: #if we dont want to give the compressor to someone else
+				if arg-1 is "stone":
+					give 1 minecart with hopper with name "&7Stone Compressor" with lore "" and "&2Automatically compresses &7Stone &2!" and "" and "&7&lCOMMON" to player
+				if arg-1 is "lapis":
+					give 1 minecart with hopper with name "&1Auto Compressor &6[&eI&6]" with lore "" and "&2Automatically compresses &eEverything &2!" and "" and "&a&lUNCOMMON" to player
+       #I removed my own compressors but left some as exmaples -> add yours here:
+		else:
+			send "Correct Usage is /getautocompressor [stone | lapis]" to player
+
+
+every {@time}: #every the set amount of time we compress any compressable blocks in the player's inventory
+	autoCompress()
+
+
+
+function autoCompress(): #The function to auto compress
+	loop all players: 
+  #section below is an example of how 1 compressor works
+		if loop-player has minecart with hopper with name "&7Stone Compressor":
+			if loop-player has 64 of plain cobblestone: 
+				set {_amount} to number of plain cobblestone in loop-player's inventory
+				set {_amount} to {_amount} / 64
+				set {_amount} to floor({_amount})
+				loop {_amount} times:
+					remove ({_amount} * 64) of plain cobblestone from loop-player's inventory
+					give {_amount} of shiny smooth stone with name "&7Compressed Cobblestone" to loop-player
+  #end of section
+
+
+
+  #section below is another example of how the compressor works
+  
+		else if loop-player has minecart with hopper with name "&1Auto Compressor &6[&eI&6]":
+			set {_compressable::*} to plain lapis lazuli or plain gold ingot or plain emerald or plain diamond or plain iron ingot or plain coal or plain cobblestone
+			loop {_compressable::*}:
+				if loop-player has 64 of loop-value-2:
+					set {_amount} to number of loop-value-2 in loop-player's inventory
+					set {_amount} to {_amount} / 64
+					set {_amount} to floor({_amount})
+					loop {_amount} times:
+						remove ({_amount} * 64) of loop-value-2 from loop-player's inventory
+						if loop-value-2 is lapis lazuli:
+							give {_amount} of shiny lapis lazuli with name "&1Compressed Lapis" to loop-player
+						if loop-value-2 is plain cobblestone:
+							give {_amount} of shiny smooth stone with name "&7Compressed Cobblestone" to loop-player
+						if loop-value-2 is plain coal:
+							give {_amount} of shiny coal with name "&8Compressed Coal" to loop-player
+						if loop-value-2 is plain iron ingot:
+							give {_amount} of shiny iron ingot with name "&fCompressed Iron" to loop-player
+						if loop-value-2 is diamond:
+							give {_amount} of shiny diamond with name "&bCompressed Diamond" to loop-player
+						if loop-value-2 is emerald:
+							give {_amount} of shiny emerald with name "&aCompressed Emerald" to loop-player
+						if loop-value-2 is gold ingot:
+							give {_amount} of shiny gold ingot with name "&6Compressed Gold" to loop-player
