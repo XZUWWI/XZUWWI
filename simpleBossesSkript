@@ -1,0 +1,106 @@
+# This is a Free simple code I made for Bosses / Mini Bosses
+
+# Made by XZUWWI, Discord: zrxxz | Dm me if you have any questions about this 
+
+
+options:
+	prefix: &bexample >&r # set this to whatever you'd like
+	permission: bosses.admin # permission for players who can set the bosses locations ect..
+	permission_message: &cNo, You cant do that bud. # Message for insufficient permissions
+
+
+ # Boss Example
+	boss1.name: &aExample of Boss Name # This is the name of the boss and will be shown above the mob
+  boss1.var: Example # This must not include colors and only be alphabetical or numeral
+	boss1.setspawn.successful: {@prefix} &aSuccessfully set spawn of boss 1!
+	
+	
+command /setbossspawn [<text>]:
+	permission: {@permission}
+	permission message: {@permission_message}
+	trigger:
+		if arg-1 is set:
+			if arg-1 is {@boss1.var}:
+				set {boss1spawn} to location of block below player
+				set block at {boss1spawn} to gold block # you can change this to whatever you want its just something to be able ot tell where the spawn is
+				send "&aSpawn location of %{@boss1.name}% &awas set!" to player
+		
+		else:
+			send "&cCorrect Usuage is: /setbossspawn [boss_name]" to player
+
+command killbosses:
+	permission: op
+	trigger:
+		loop all entities:
+			if display name of loop-entity is "{@boss1.name}":
+				kill loop-entity
+
+
+command /spawnboss [<text>]:
+	permission: {@permission}
+	permission message: {@permission_message}
+	trigger:
+		if arg-1 is set:
+			if arg-1 is "{@boss1.name}":
+				if {boss1} is not alive:
+					if {boss1spawn} is set:
+						set {boss1} to "alive"
+            # Customize you boss here
+						spawn 1 of skeleton at {boss1spawn}
+						equip last spawned skeleton with unbreakable iron chestplate of protection 2
+						equip last spawned skeleton with unbreakable iron boots of protection 2
+						set last spawned skeleton's held item to iron sword of sharpness 2 and knockback 1
+						set last spawned skeleton's max health to 80
+						set last spawned skeleton's health to 80
+						set display name of last spawned skeleton to "{@boss1.name}"  
+		else:
+			send "&cCorrect Usuage is: /spawnboss [boss_name]" to player
+
+
+every 20 seconds:
+	if {boss1} is not "alive":
+		if {boss1spawn} is set:
+			loop all players:
+				if loop-player is within 16 blocks around {boss1spawn}:
+					set {boss1} to "alive"
+          # paste the code of you boss above under here 
+					spawn 1 of skeleton at {boss1spawn}
+					equip last spawned skeleton with unbreakable iron chestplate of protection 2
+					equip last spawned skeleton with unbreakable iron boots of protection 2
+					set last spawned skeleton's held item to iron sword of sharpness 2 and knockback 1
+					set last spawned skeleton's max health to 80
+					set last spawned skeleton's health to 80
+					set display name of last spawned skeleton to "{@boss1.name}" 
+	
+
+
+every 1 second:
+	loop all entities:
+		if display name of loop-entity is "{@boss1.name}":
+			if loop-entity is not within 22 blocks around {boss1spawn}: # This is to make sure players dont take the boss too far. You can change the distance to whatever you want or delete it entirely 
+				teleport loop-entity to {boss1spawn}
+				set health of loop-entity to 80
+
+
+
+on death:
+	if display name of victim is "{@boss1.name}":
+		cancel drops
+		set {boss1} to "death"
+    # Drops of your boss, below is just a simple code for drops depending on a random number I called Luck
+		set {_luck} to random integer between 1 and 100
+		if {_luck} is between 1 and 24:
+			give 2 of ghast tear with name "&6Bob's tear" to attacker
+		else if {_luck} is between 25 and 50:
+			give 1 of ghast tear with name "&6Bob's tear" to attacker
+	
+	
+# dont touch this
+on load:
+    if {boss1} is not set:
+        set {boss1} to "death"
+	
+	
+			
+						
+	
