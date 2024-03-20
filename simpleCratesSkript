@@ -1,0 +1,168 @@
+# This is a Free simple code I made for Crates for Minecraft Servers.
+
+#Made by XZUWWI, Discord: zrxxz | Dm me if you have any questions about this
+
+#This is taken from my own server
+
+options:
+	prefix: &bExample # set this to whatever you want
+ 
+	crateTitle1: "&aRelease Crate" # name of your crate
+	crateKey1: shiny tripwire hook with name "&aRelease Crate &fKey" #name of your crate's key
+	
+
+
+command /setcrate [<text>]: #The location of your crate
+	permission: set.crate.admin
+	trigger:
+		if arg-1 is set:
+			if arg-1 is "release":
+				set block under player to Lime shulker box with name {@crateTitle1}
+
+
+
+
+
+
+
+
+command /cratekey [<text>] [<player>] [<int>]: #get a crate key
+	permission: key.crate.admin
+	trigger:
+		if arg-1 is set:
+			if arg-1 is "release": #whatever you want here im sure you understand the logic
+				if arg-2 is set:
+					if arg-3 is set:
+						give arg-3 of {@crateKey1} to arg-2
+					else if arg-3 is not set:
+						give 1 of {@crateKey1} to arg-2
+				else if arg-2 is not set:
+					give 1 of {@crateKey1} to player
+
+command /giveall [<int>]: # a giveall command for fun
+	permission: op
+	trigger:
+		give arg-1 of player's held item to players
+		broadcast "&b%player% &fgave everyone %arg-1% %player's held item's name%"
+					
+
+on leftclick on shulker box: # To remove a crate
+	if event-player is sneaking	:
+		if event-player is op:
+			break event-block
+
+
+on leftclick on shulker box: # previewing a crate
+	if event-block is Lime Shulker box:
+		cancel event
+		play sound "BLOCK_CHEST_OPEN" at volume 100 and pitch 0.5 for player
+		open chest with 4 rows named {@crateTitle1} to player
+		loop 37 times:
+			set slot loop-value-1 - 1 of player's current inventory to black stained glass pane
+		set slot 10 of player's current inventory to shiny paper with name "&9&lHERO &fRank"  with lore "" and "&a1 in 100"
+		set slot 11 of player's current inventory to 10 of shiny purple dye with name "&aRank Token" with lore "" and "&a4 in 100"
+		set slot 12 of player's current inventory to 1 of shiny purple dye with name "&aRank Token" with lore "" and "&a10 in 100"
+		set slot 13 of player's current inventory to 1 of minecart with hopper with name "&1Auto Compressor &6[&eI&6]" with lore "" and "&a15 in 100"
+		set slot 14 of player's current inventory to 8 of shiny ghast tear with name  "&6Bob's tear" with lore "" and "&a20 in 100" 
+		set slot 15 of player's current inventory to 8 of shiny lapis lazuli block with name "&1Super Compressed Lapis" with lore "" and "&a30 in 100" 
+		set slot 16 of player's current inventory to 8 of shiny gold block with name  "&6Super Compressed Gold" with lore "" and "&a30 in 100" 
+		set slot 19 of player's current inventory to 10 of shiny emerald block with name  "&2Super Compressed Emerald" with lore "" and "&a30 in 100" 
+		set slot 20 of player's current inventory to 10 of diamond block with name  "&bSuper Compressed Diamond" with lore "" and "&a30 in 100" 
+		set slot 21 of player's current inventory to 12 of shiny iron block with name  "&fSuper Compressed Iron" with lore "" and "&a30 in 100" 
+		set slot 22 of player's current inventory to 12 of shiny coal block with name  "&8Super Compressed Coal" with lore "" and "&a30 in 100" 
+		set slot 23 of player's current inventory to 16 of shiny stone button with name  "&7Super Compressed Cobblestone" with lore "" and "&a30 in 100" 
+		set slot 25 of player's current inventory to 1 of shiny paper with name  "&e&lFly &fPerms" with lore "" and "&a1 in 100"
+		set slot 24 of player's current inventory to 16 of enchanted golden apple with lore "" and "&a30 in 100"
+		
+		
+		
+
+on rightclick on Lime Shulker box: #opening a crate
+	cancel event
+	if player's inventory contains {@crateKey1}:
+		remove 1 of {@crateKey1} from player's inventory
+		set {_chance} to random integer between 1 and 100
+		if {_chance} is 1: 
+			play sound "ENTITY_EXPERIENCE_ORB_PICKUP" at volume 100 and pitch 1 for player
+			open chest with 3 rows named {@crateTitle1} to player
+			loop 28 times:
+				set slot loop-value-1 - 1 of player's current inventory to lime stained glass pane
+			set slot 13 of player's current inventory to shiny paper with name "&9&lHERO &fRank" 
+			execute console command "voucher hero %event-player%"
+			send "" to player
+		else if {_chance} is between 2 and 5: 
+			play sound "ENTITY_EXPERIENCE_ORB_PICKUP" at volume 100 and pitch 1 for player
+			open chest with 3 rows named {@crateTitle1} to player
+			loop 28 times:
+				set slot loop-value-1 - 1 of player's current inventory to lime stained glass pane
+			set slot 13 of player's current inventory to 10 of shiny purple dye with name "&aRank Token"
+			give player 10 of shiny purple dye with name "&aRank Token"
+		else if {_chance} is between 6 and 10: 
+			play sound "ENTITY_EXPERIENCE_ORB_PICKUP" at volume 100 and pitch 1 for player
+			open chest with 3 rows named {@crateTitle1} to player
+			loop 28 times:
+				set slot loop-value-1 - 1 of player's current inventory to lime stained glass pane
+			set slot 13 of player's current inventory to 1 of shiny purple dye with name "&aRank Token"
+			give player 1 of shiny purple dye with name "&aRank Token"
+		else if {_chance} is between 11 and 19: 
+			play sound "ENTITY_EXPERIENCE_ORB_PICKUP" at volume 100 and pitch 1 for player
+			open chest with 3 rows named {@crateTitle1} to player
+			loop 28 times:
+				set slot loop-value-1 - 1 of player's current inventory to lime stained glass pane
+			set slot 13 of player's current inventory to minecart with hopper with name "&1Auto Compressor &6[&eI&6]"
+			execute console command "getautocompressor lapis %event-player%"
+		else if {_chance} is between 20 and 29: 
+			play sound "ENTITY_EXPERIENCE_ORB_PICKUP" at volume 100 and pitch 1 for player
+			open chest with 3 rows named {@crateTitle1} to player
+			loop 28 times:
+				set slot loop-value-1 - 1 of player's current inventory to lime stained glass pane
+			set slot 13 of player's current inventory to 8 ghast tear with name "&6Bob's tear"
+			give 8 of ghast tear with name  "&6Bob's tear" to player
+		else if {_chance} is between 29 and 70:
+			play sound "ENTITY_EXPERIENCE_ORB_PICKUP" at volume 100 and pitch 1 for player
+			open chest with 3 rows named {@crateTitle1} to player
+			loop 28 times:
+				set slot loop-value-1 - 1 of player's current inventory to lime stained glass pane
+			set {_chance2} to a random integer between 1 and 7
+			if {_chance2} is 1:
+				set slot 13 of player's current inventory to 8 of shiny lapis lazuli block with name "&1Super Compressed Lapis"
+				give 8 of shiny lapis lazuli block with name "&1Super Compressed Lapis" to player
+			else if {_chance2} is 2:
+				set slot 13 of player's current inventory to 8 of shiny gold block with name  "&6Super Compressed Gold"
+				give 8 of shiny gold block with name  "&6Super Compressed Gold" to player
+			else if {_chance2} is 3:
+				set slot 13 of player's current inventory to 10 of shiny emerald block with name  "&2Super Compressed Emerald"
+				give 10 of shiny emerald block with name  "&2Super Compressed Emerald" to player
+			else if {_chance2} is 4:
+				set slot 13 of player's current inventory to 10 of diamond block with name  "&bSuper Compressed Diamond" 
+				give 10 of shiny diamond block with name  "&bSuper Compressed Diamond"  to player
+			else if {_chance2} is 5:
+				set slot 13 of player's current inventory to 12 of shiny iron block with name  "&fSuper Compressed Iron"
+				give 12 of shiny iron block with name  "&fSuper Compressed Iron" to player
+			else if {_chance2} is 6:
+				set slot 13 of player's current inventory to 12 of shiny coal block with name  "&8Super Compressed Coal"
+				give 12 of shiny coal block with name  "&8Super Compressed Coal" to player
+			else if {_chance2} is 7:
+				set slot 13 of player's current inventory to 16 of shiny stone button with name  "&7Super Compressed Cobblestone" 
+				give 16 of shiny stone button with name  "&7Super Compressed Cobblestone"  to player
+		else if {_chance} is between 71 and 72: 
+			play sound "ENTITY_EXPERIENCE_ORB_PICKUP" at volume 100 and pitch 1 for player
+			open chest with 3 rows named {@crateTitle1} to player
+			loop 28 times:
+				set slot loop-value-1 - 1 of player's current inventory to lime stained glass pane
+			set slot 13 of player's current inventory to 1 of shiny paper with name  "&e&lFly &fPerms" 
+			execute console command "/voucher fly %event-player%"
+		else if {_chance} is between 73 and 100: 
+			play sound "ENTITY_EXPERIENCE_ORB_PICKUP" at volume 100 and pitch 1 for player
+			open chest with 3 rows named {@crateTitle1} to player
+			loop 28 times:
+				set slot loop-value-1 - 1 of player's current inventory to lime stained glass pane
+			set slot 13 of player's current inventory to 16 of enchanted golden apple
+			give 16 of enchanted golden apple to player
+		
+			
+
+on inventory click: #So players cant steal items from a crate
+	if name of player's current inventory is {@crateTitle1}:
+		cancel event
+	
