@@ -1,0 +1,26 @@
+# a simple example of player shop with help of ShopKeepers and Znpcs
+
+# Made By XZUWWI, Discord ( zrxxz ) | DM me for any questions, 
+
+
+# command to be executed when a player click on a specific npc
+
+command stone [<player>]:
+	permission: op
+	trigger:
+		open chest with 3 rows named "&0Stone Merchant" to arg-1
+		loop 28 times:
+			set slot loop-value-1 - 1 of arg-1's current inventory to black stained glass pane
+		set slot 11 of arg-1's current inventory to wooden pickaxe with name "&fTools" 
+		set slot 13 of arg-1's current inventory to leather tunic with name "&fArmor"
+		set slot 15 of arg-1's current inventory to piston with name "&fMisc"
+		
+on inventory click:
+	if event-inventory's name is "&0Stone Merchant":
+		cancel event
+		if event-slot is 11:
+			execute console command "shopkeeper open Stone-Tools %event-player%"
+		if event-slot is 13:
+			execute console command "shopkeeper open Stone-Armor %event-player%"
+		if event-slot is 15:
+			execute console command "shopkeeper open Stone-Misc %event-player%"
